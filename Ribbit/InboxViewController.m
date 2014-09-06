@@ -67,8 +67,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-		static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        static NSString *CellIdentifier = @"Cell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
 		PFObject *message = [self.messages objectAtIndex:indexPath.row];
 		cell.textLabel.text = [message objectForKey:@"senderName"];
@@ -76,7 +76,9 @@
 		NSString *fileType = [message objectForKey:@"fileType"];
 		if ( [fileType isEqualToString:@"image"] ) {
 			cell.imageView.image = [UIImage imageNamed:@"icon_image"];
-		} else {
+		} else if ( [fileType isEqualToString:@"audio"]) {
+            cell.imageView.image = [UIImage imageNamed:@"icon_image"];
+        } else {
 			cell.imageView.image = [UIImage imageNamed:@"icon_video"];
 		}
     
@@ -89,7 +91,9 @@
 
 	if ( [fileType isEqualToString:@"image"] ) {
 			[self performSegueWithIdentifier:@"showImage" sender:self];
-		} else {
+    } else if ( [fileType isEqualToString:@"audio"] ) {
+            [self performSegueWithIdentifier:@"showAudioRecorder" sender:self];
+    } else {
             //file is video
             PFFile *videoFile = [self.selectedMessage objectForKey:@"file"];
             NSURL *fileURL = [NSURL URLWithString:videoFile.url];
@@ -133,6 +137,9 @@
 		
 		imageViewController.message = self.selectedMessage;
 		
-	}
+	} else if ([segue.identifier isEqualToString:@"showAudioRecorder"]) {
+        NSLog(@"Open audio recorder");
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+    }
 }
 @end

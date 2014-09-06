@@ -7,8 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Parse/Parse.h>
+#import <AVFoundation/AVFoundation.h>
+#import "AudioViewController.h"
 
-@interface AudioViewController : UITableViewController
+@interface AudioViewController : UITableViewController <AVAudioPlayerDelegate, AVAudioRecorderDelegate>
+@property (nonatomic, strong) AVAudioRecorder *audioRecorder;
+@property (nonatomic, strong) AVAudioPlayer *audioPlayer;
+
+@property (nonatomic, strong) PFObject *message;
 
 - (IBAction)cancel:(id)sender;
 - (IBAction)send:(id)sender;
